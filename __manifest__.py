@@ -13,6 +13,7 @@
     'website': '',
     'depends': ['base','sale','account','l10n_cl_fe'],
     'data': [	    
+        "security/groups.xml",
         "views/res_partner.xml"
     ],
     'installable': True,
