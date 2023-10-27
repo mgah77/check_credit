@@ -1,0 +1,9 @@
+<odoo>
+   
+    <record id="group_addon_credit" model="res.groups">
+        <field name="name">ADM credito clientes</field>
+    </record>
+
+
+</odoo>
+
