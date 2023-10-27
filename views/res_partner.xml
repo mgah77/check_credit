@@ -1,0 +1,13 @@
+<odoo>
+    <record model="ir.ui.view" id="view_partner_activity_insumar_form">
+        <field name="name">res.partner.activity.insumar.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="l10n_cl_fe.view_partner_activity_inherit_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='credit_limit']" position="attributes">
+                <attribute name="invisible">0</attribute>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>
