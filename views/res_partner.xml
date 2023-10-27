@@ -5,7 +5,7 @@
         <field name="inherit_id" ref="l10n_cl_fe.view_partner_activity_inherit_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='property_payment_term_id']" position="after">
-                <field name="credit_limit" groups="parches.group_addon_credit"/>
+                <field name="credit_limit" groups="check_credit.group_addon_credit"/>
             </xpath>
             <xpath expr="//field[@name='credit_limit']" position="attributes">
                 <attribute name="invisible">0</attribute>
