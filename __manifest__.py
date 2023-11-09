@@ -2,7 +2,7 @@
 
 {
     'name': 'Insumar_check_credit',
-    'version': '1.0.02',
+    'version': '1.0.01',
     'category': 'General',
     'summary': '',
     'description': """
@@ -12,7 +12,7 @@
     'author' : 'M.Gah',
     'website': '',
     'depends': ['base','sale','account','l10n_cl_fe'],
-    'data': [
+    'data': [	    
         "security/groups.xml",
         "views/res_partner.xml"
     ],
