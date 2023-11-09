@@ -2,17 +2,17 @@
 
 {
     'name': 'Insumar_check_credit',
-    'version': '1.0.01',
+    'version': '1.1.01',
     'category': 'General',
     'summary': '',
     'description': """
-
+    Revision y aviso de credito de clientes
 
        """,
     'author' : 'M.Gah',
     'website': '',
     'depends': ['base','sale','account','l10n_cl_fe'],
-    'data': [	    
+    'data': [
         "security/groups.xml",
         "views/res_partner.xml"
     ],

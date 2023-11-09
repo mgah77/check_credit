@@ -10,7 +10,7 @@
             <xpath expr="//field[@name='credit_limit']" position="attributes">
                 <attribute name="invisible">0</attribute>
             </xpath>
-            
+
         </field>
     </record>
 </odoo>
