@@ -1,4 +1,5 @@
 from odoo import models, fields, api, _
+from dateutil.relativedelta import relativedelta
 
 
 class account_move_check_credit(models.Model):
@@ -18,15 +19,38 @@ class account_move_check_credit(models.Model):
                 ('payment_state', '=', 'not_paid')
             ])
             if nuevo > 0:
-                pre_total = Invoice.search_count([# Revisa facturas por vencer
+                # Bloqueo por facturas vencidas según time_limit (por defecto 90 días)
+                limit_days = self.partner_id.time_limit or 90
+                date_limit = fields.Date.today() - relativedelta(days=limit_days)
+                overdue_limit = Invoice.search_count([
+                    ('partner_id', '=', self.partner_id.id),
+                    ('move_type', '=', 'out_invoice'),
+                    ('payment_state', '=', 'not_paid'),
+                    ('invoice_date_due', '<=', date_limit),
+                ])
+                if overdue_limit > 0:
+                    message = _("Este cliente tiene facturas vencidas por más de %s días.") % limit_days
+                    self.notification_message = message
+                    self.estado_partner = 'deudor'
+                    self.state = 'cancel'
+                    return {
+                        'warning': {
+                            'title': _('Aviso'),
+                            'message': message,
+                        }
+                    }
+
+                pre_total = Invoice.search_count([  # Revisa facturas por vencer
                     ('partner_id', '=', self.partner_id.id),
                     ('move_type', '=', 'out_invoice'),
                     ('payment_state', '=', 'not_paid'),
                     ('invoice_date_due', '<', fields.Date.today())
                 ])
-                vencido = Invoice.search([('partner_id', '=', self.partner_id.id),# Revisa facturas por vencidas
-                                        ('move_type', '=', 'out_invoice'),
-                                        ('payment_state', '=', 'not_paid')])
+                vencido = Invoice.search([  # Revisa facturas por vencidas
+                    ('partner_id', '=', self.partner_id.id),
+                    ('move_type', '=', 'out_invoice'),
+                    ('payment_state', '=', 'not_paid')
+                ])
                 total_deuda = sum(factura.amount_total for factura in vencido)
                 if total_deuda > self.partner_id.credit_limit:
                     message = _("Este cliente sobrepasó su credito.")
@@ -54,6 +78,7 @@ class account_move_check_credit(models.Model):
 
         self.notification_message = False
 
+
 class sale_order_check_credit(models.Model):
     _inherit = ['sale.order']
 
@@ -71,15 +96,38 @@ class sale_order_check_credit(models.Model):
                 ('payment_state', '=', 'not_paid')
             ])
             if nuevo > 0:
-                pre_total = Invoice.search_count([# Revisa facturas por vencer
+                # Bloqueo por facturas vencidas según time_limit (por defecto 90 días)
+                limit_days = self.partner_id.time_limit or 90
+                date_limit = fields.Date.today() - relativedelta(days=limit_days)
+                overdue_limit = Invoice.search_count([
+                    ('partner_id', '=', self.partner_id.id),
+                    ('move_type', '=', 'out_invoice'),
+                    ('payment_state', '=', 'not_paid'),
+                    ('invoice_date_due', '<=', date_limit),
+                ])
+                if overdue_limit > 0:
+                    message = _("Este cliente tiene facturas vencidas por más de %s días.") % limit_days
+                    self.notification_message = message
+                    self.estado_partner = 'deudor'
+                    self.state = 'cancel'
+                    return {
+                        'warning': {
+                            'title': _('Aviso'),
+                            'message': message,
+                        }
+                    }
+
+                pre_total = Invoice.search_count([  # Revisa facturas por vencer
                     ('partner_id', '=', self.partner_id.id),
                     ('move_type', '=', 'out_invoice'),
                     ('payment_state', '=', 'not_paid'),
                     ('invoice_date_due', '<', fields.Date.today())
                 ])
-                vencido = Invoice.search([('partner_id', '=', self.partner_id.id),# Revisa facturas por vencidas
-                                        ('move_type', '=', 'out_invoice'),
-                                        ('payment_state', '=', 'not_paid')])
+                vencido = Invoice.search([  # Revisa facturas por vencidas
+                    ('partner_id', '=', self.partner_id.id),
+                    ('move_type', '=', 'out_invoice'),
+                    ('payment_state', '=', 'not_paid')
+                ])
                 total_deuda = sum(factura.amount_total for factura in vencido)
                 if total_deuda > self.partner_id.credit_limit:
                     message = _("Este cliente sobrepasó su credito.")

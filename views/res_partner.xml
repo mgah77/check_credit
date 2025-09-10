@@ -6,6 +6,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='property_payment_term_id']" position="after">
                 <field name="credit_limit" groups="check_credit.group_addon_credit"/>
+                <field name="time_limit" placeholder="Si esta vacío, se asume 90 dias" groups="check_credit.group_addon_credit"/>
             </xpath>
             <xpath expr="//field[@name='credit_limit']" position="attributes">
                 <attribute name="invisible">0</attribute>
