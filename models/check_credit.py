@@ -35,7 +35,7 @@ class account_move_check_credit(models.Model):
                 ('partner_id', '=', self.partner_id.id),
                 ('move_type', '=', 'out_invoice'),
                 ('payment_state', '=', 'not_paid'),
-                ('invoice_date_due', '<=', date_limit),
+                ('invoice_date', '<=', date_limit),
             ])
             if overdue_limit > 0:
                 message = _("Este cliente tiene facturas vencidas por más de %s días.") % limit_days
@@ -121,7 +121,7 @@ class sale_order_check_credit(models.Model):
                 ('partner_id', '=', self.partner_id.id),
                 ('move_type', '=', 'out_invoice'),
                 ('payment_state', '=', 'not_paid'),
-                ('invoice_date_due', '<=', date_limit),
+                ('invoice_date', '<=', date_limit),
             ])
             if overdue_limit > 0:
                 message = _("Este cliente tiene facturas vencidas por más de %s días.") % limit_days
